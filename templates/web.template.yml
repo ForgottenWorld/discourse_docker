@@ -16,7 +16,7 @@ env:
   DISCOURSE_DB_PORT:
 
 params:
-  version: latest
+  version: forgottenworld
   home: /var/www/discourse
   upload_size: 10m
   nginx_worker_connections: 4000
@@ -99,6 +99,7 @@ run:
       hook: code
       cmd:
         - sudo -H -E -u discourse git clean -f
+        - sudo -H -E -u discourse git remote set-url origin https://github.com/ForgottenWorld/discourse.git
         - |-
           sudo -H -E -u discourse bash -c '
             set -o errexit
@@ -110,6 +111,7 @@ run:
             fi
           '
         - sudo -H -E -u discourse git config user.discourse-version $version
+        - sudo -H -E -u discourse git rev-parse HEAD
         - mkdir -p tmp
         - chown discourse:www-data tmp
         - mkdir -p tmp/pids
